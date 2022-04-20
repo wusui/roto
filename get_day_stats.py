@@ -31,6 +31,8 @@ def get_games_on_date(game_date):
     for entry in glist:
         if "boxscore/MLB_" in entry["href"]:
             mlb_teams = entry["href"].split("_")[-1]
+            if mlb_teams.startswith("2"):
+                mlb_teams = entry["href"].split("_")[-2]
             mlb_teams = mlb_teams.strip("_/").split("@")
             if mlb_teams[0] in teamabbrv or mlb_teams[1] in teamabbrv:
                 retv.append(entry["href"])
