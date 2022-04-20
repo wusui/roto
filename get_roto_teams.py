@@ -31,7 +31,7 @@ def get_league_team_data(when_to_get):
     if os.path.exists(ofilen):
         return
     config = ConfigParser()
-    config.read('gnu2022.ini')
+    config.read('roto.ini')
     parse_info = config["DEFAULT"]
     league = parse_info["league"]
     driver = cbs_login(parse_info["username"],

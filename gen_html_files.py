@@ -16,34 +16,34 @@ def gen_html_files(date_info):
 
     @param date_info datetime value
     """
-    keyv = date_info.strftime("%Y%m%d")
+    tempv = date_info.strftime("%Y%m%d")
     ndate = date_info.strftime("%A - %B %d, %Y")
-    dirname = f"html_files_{keyv}"
+    dirname = f"html_files_{tempv}"
     with open("tablehtml.txt", "r", encoding="utf8") as iofile:
         tpattern = iofile.read()
     if not os.path.exists(dirname):
         os.mkdir(dirname)
-    fileio = os.sep.join(["data", f"rteams_on_{keyv}.json"])
+    fileio = os.sep.join(["data", f"rteams_on_{tempv}.json"])
     with open(fileio, "r", encoding="utf8") as iofile:
         team_data = json.load(iofile)
     fnames = []
     txtvals = []
-    for keyv in team_data:
+    for tempv in team_data:
         fnames.append(
-            keyv.replace(" ", "_").replace("&", "X").replace("'", "X")
+            tempv.replace(" ", "_").replace("&", "X").replace("'", "X")
         )
-        txtvals.append(keyv.replace("&", "&amp;").replace("'", "&apos;"))
+        txtvals.append(tempv.replace("&", "&amp;").replace("'", "&apos;"))
     print(fnames)
     print(txtvals)
     bheaders = ["NAME", "TEAM", "POSITION", "AT BATS", "AVG", "RUNS",
                "RBIS", "HR", "SB"]
     pheaders = ["NAME", "TEAM", "WIN", "SAVE", "INNINGS",
                "ERA", "WHIP", "K/9"]
-    for indx, keyv in enumerate(team_data):
+    for indx, tempv in enumerate(team_data):
         ltables = []
-        ltables.append(get_new_table(team_data[keyv]["batters"],
+        ltables.append(get_new_table(team_data[tempv]["batters"],
                                bheaders, bdata_func))
-        ltables.append(get_new_table(team_data[keyv]["pitchers"],
+        ltables.append(get_new_table(team_data[tempv]["pitchers"],
                                pheaders, pdata_func))
         otxt = tpattern[:] % (txtvals[indx], txtvals[indx], ndate,
                               ltables[0], ltables[1])
