@@ -73,6 +73,8 @@ def bdata_func(tlines, day_stats):
     @param tlines html file so far.  We add stats to this
     @param day_stats dict of statistics for a player
     """
+    if 'save' in day_stats:
+        return tlines
     tlines.append(wrapper(str(day_stats['ab']), 'td'))
     atbs =  day_stats['ab']
     if atbs == 0:

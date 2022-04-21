@@ -153,6 +153,8 @@ def process_raw_data(raw_data):
             continue
         if len(rline) == 2 and rline[1].startswith("MLB"):
             teams = rline[1].split("_")[-1].split("@")
+            if teams == ['2']:
+                teams = rline[1].split("_")[-2].split("@")
             pit_mode = True
             if rline[0] < 4:
                 pit_mode = False
