@@ -7,6 +7,7 @@ in html<date> directory
 """
 import os
 import json
+from find_unclaimed import get_free_agents
 
 def gen_html_files(date_info):
     """
@@ -47,9 +48,40 @@ def gen_html_files(date_info):
                                pheaders, pdata_func))
         otxt = tpattern[:] % (txtvals[indx], txtvals[indx], ndate,
                               ltables[0], ltables[1])
-        fileio = os.sep.join([dirname, f"{fnames[indx]}.html"])
-        with open(fileio, "w", encoding="utf8") as iofile:
-            iofile.write(otxt)
+        do_io(otxt, dirname, fnames[indx])
+    handle_free_agents(bheaders, pheaders, ndate, tpattern, dirname)
+
+def handle_free_agents(bheaders, pheaders, ndate, tpattern, dirname):
+    """
+    Call get_free_agents and generate free agent files
+
+    @param bheaders list Headers for batter tables
+    @param pheaders list Headers for pitcher tables
+    @param ndata String date
+    @param tpattern String format string of entire html page
+    @param dirname String name of directory where this data will be stored
+    """
+    free_agents = get_free_agents()
+    bats = get_new_table(free_agents[0], bheaders, bdata_func)
+    otxt = tpattern[:] % ("Batters Available", "Batters Available", ndate,
+                         bats, "")
+    do_io(otxt, dirname, "free_agent_batters")
+    pits = get_new_table(free_agents[1], pheaders, pdata_func)
+    otxt = tpattern[:] % ("Pitchers Available", "Pitchers Available", ndate,
+                         pits, "")
+    do_io(otxt, dirname, "free_agent_pitchers")
+
+def do_io(otxt, dirname, file_nm):
+    """
+    Write html file in html_files_<date> directory
+
+    @param otxt String html text to be written
+    @param dirname String directory where html text will be stored
+    @param file_nm String file name where html text will be stored
+    """
+    fileio = os.sep.join([dirname, f"{file_nm}.html"])
+    with open(fileio, "w", encoding="utf8") as iofile:
+        iofile.write(otxt)
 
 def init_table_header(headers):
     """
